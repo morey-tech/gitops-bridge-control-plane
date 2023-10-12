@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: bootstrap-addons
+  name: addons
   namespace: argocd
 spec:
   syncPolicy:
