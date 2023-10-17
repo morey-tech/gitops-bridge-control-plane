@@ -9,6 +9,12 @@ spec:
   generators:
     - list:
         elements:
+        - chartName: argo-rollouts
+          chartRepo: hhttps://argoproj.github.io/argo-helm
+          chartVersionDefault: 2.32.0
+        - chartName: argo-workflows
+          chartRepo: https://argoproj.github.io/argo-helm
+          chartVersionDefault: 0.33.3
         - chartName: ingress-nginx
           chartRepo: https://kubernetes.github.io/ingress-nginx
           chartVersionDefault: 4.8.1

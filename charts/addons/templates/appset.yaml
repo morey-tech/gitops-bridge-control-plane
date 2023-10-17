@@ -55,7 +55,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
               # General values for the addons chart.
-              - $values/charts/addons-values/{{`{{values.addonChart}}`}}/values.yaml
+              - $values/addons/{{`{{values.addonChart}}`}}/values.yaml
               # Environment-specific values for addons chart.
               - $values/environments/{{`{{metadata.labels.environment}}`}}/addons/{{`{{values.addonChart}}`}}/values.yaml
               # Cluster-specific values for the addons chart.
