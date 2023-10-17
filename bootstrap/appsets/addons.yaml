@@ -10,7 +10,7 @@ spec:
     - list:
         elements:
         - chartName: argo-rollouts
-          chartRepo: hhttps://argoproj.github.io/argo-helm
+          chartRepo: https://argoproj.github.io/argo-helm
           chartVersionDefault: 2.32.0
         - chartName: argo-workflows
           chartRepo: https://argoproj.github.io/argo-helm
