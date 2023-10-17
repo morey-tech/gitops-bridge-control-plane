@@ -63,6 +63,7 @@ spec:
           targetRevision: '{{metadata.annotations.addons_repo_revision}}'
           ref: values
       destination:
+        # Deploy to namespace with the same name as the addon chart.
         namespace: '{{values.addonChart}}'
         name: '{{name}}'
       syncPolicy:
