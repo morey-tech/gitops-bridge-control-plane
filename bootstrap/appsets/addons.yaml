@@ -1,4 +1,3 @@
----
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -13,10 +12,6 @@ spec:
         - chartName: ingress-nginx
           chartRepo: https://kubernetes.github.io/ingress-nginx
           chartVersionDefault: 4.8.1
-        # - chartName: ingress-nginx
-        #   chartRepo: https://kubernetes.github.io/ingress-nginx
-        #   chartVersionDefault: 4.8.1
-    
   template:
     metadata:
       name: 'addon-{{chartName}}'
