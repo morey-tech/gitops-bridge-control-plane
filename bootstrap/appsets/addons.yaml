@@ -23,14 +23,14 @@ spec:
         path: 'charts/addons'
         targetRevision: 'HEAD'
         helm:
-          releaseName: {{chartName}}
+          releaseName: '{{chartName}}'
           parameters:
           - name: chartName
-            value: {{chartName}}
+            value: '{{chartName}}'
           - name: chartRepo
-            value: {{chartRepo}}
+            value: '{{chartRepo}}'
           - name: chartVersionDefault
-            value: {{chartVersionDefault}}
+            value: '{{chartVersionDefault}}'
       destination:
         namespace: 'argocd'
         name: 'in-cluster'
