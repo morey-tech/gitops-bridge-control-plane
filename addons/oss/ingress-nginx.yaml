@@ -14,7 +14,7 @@ spec:
               values:
                 addonChart: ingress-nginx
                 addonChartVersion: 4.8.1  # Default addon chart version.
-                addonChartRepository: https://argoproj.github.io/argo-helm
+                addonChartRepository: https://kubernetes.github.io/ingress-nginx
               selector:
                 matchExpressions:
                   # Don't deploy addons to cluster running Argo CD.
