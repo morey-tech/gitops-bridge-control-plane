@@ -4,29 +4,26 @@ metadata:
   name: addons
   namespace: argocd
 spec:
-  metadata:
-    name: 'addons'
-  spec:
-    project: default
-    source:
-      # These annotations are set by Terraform.
-      repoURL: 'https://github.com/morey-tech/gitops-bridge-control-plane'
-      path: 'charts/addons'
-      targetRevision: 'HEAD'
-      helm:
-        valuesObject:
-          addons:
-          - chartName: argo-rollouts
-            chartRepo: https://argoproj.github.io/argo-helm
-            chartVersionDefault: 2.32.0
-          - chartName: argo-workflows
-            chartRepo: https://argoproj.github.io/argo-helm
-            chartVersionDefault: 0.33.3
-          - chartName: ingress-nginx
-            chartRepo: https://kubernetes.github.io/ingress-nginx
-            chartVersionDefault: 4.8.1
-    destination:
-      namespace: 'argocd'
-      name: 'in-cluster'
-    syncPolicy:
-      automated: {}
+  project: default
+  source:
+    # These annotations are set by Terraform.
+    repoURL: 'https://github.com/morey-tech/gitops-bridge-control-plane'
+    path: 'charts/addons'
+    targetRevision: 'HEAD'
+    helm:
+      valuesObject:
+        addons:
+        - chartName: argo-rollouts
+          chartRepo: https://argoproj.github.io/argo-helm
+          chartVersionDefault: 2.32.0
+        - chartName: argo-workflows
+          chartRepo: https://argoproj.github.io/argo-helm
+          chartVersionDefault: 0.33.3
+        - chartName: ingress-nginx
+          chartRepo: https://kubernetes.github.io/ingress-nginx
+          chartVersionDefault: 4.8.1
+  destination:
+    namespace: 'argocd'
+    name: 'in-cluster'
+  syncPolicy:
+    automated: {}
