@@ -1,0 +1,6 @@
+addons:
+- chartName: ingress-nginx
+  chartRepo: https://kubernetes.github.io/ingress-nginx
+  chartVersionDefault: 4.8.1
+#   chartVersionStaging: 
+#   chartVersionProd: 

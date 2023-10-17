@@ -15,7 +15,7 @@ spec:
         generators:
           - clusters:
               values:
-                addonChart: {{ .chartName | default $.Release.Name }}
+                addonChart: {{ .chartName }}
                 addonChartVersion: {{ .chartVersionDefault }}  # Default addon chart version.
                 addonChartRepository: {{ .chartRepo }}
               selector:
@@ -25,7 +25,7 @@ spec:
                     operator: NotIn
                     values: [in-cluster]
                   # Check annotation to see if addon is enabled.
-                  - key: enable_{{ $.Release.Name | snakecase }}
+                  - key: enable_{{ .chartName | snakecase }}
                     operator: In
                     values: ['true']
 
