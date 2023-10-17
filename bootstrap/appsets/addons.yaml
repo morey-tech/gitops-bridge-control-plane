@@ -8,15 +8,18 @@ spec:
   syncPolicy:
     preserveResourcesOnDeletion: true
   generators:
-    - clusters:
-        selector:
-          matchExpressions:
-            - key: akuity.io/argo-cd-cluster-name
-              operator: NotIn
-              values: [in-cluster]
+    - list:
+        elements:
+        - chartName: ingress-nginx
+          chartRepo: https://kubernetes.github.io/ingress-nginx
+          chartVersionDefault: 4.8.1
+        # - chartName: ingress-nginx
+        #   chartRepo: https://kubernetes.github.io/ingress-nginx
+        #   chartVersionDefault: 4.8.1
+    
   template:
     metadata:
-      name: 'bootstrap-addons'
+      name: 'addon-{{chartName}}'
     spec:
       project: default
       source:
@@ -24,9 +27,15 @@ spec:
         repoURL: '{{metadata.annotations.addons_repo_url}}'
         path: '{{metadata.annotations.addons_repo_path}}'
         targetRevision: '{{metadata.annotations.addons_repo_revision}}'
-        directory:
-          recurse: true
-          exclude: exclude/*
+        helm:
+          releaseName: {{chartName}}
+          parameters:
+          - name: chartName
+            value: {{chartName}}
+          - name: chartRepo
+            value: {{chartRepo}}
+          - name: chartVersionDefault
+            value: {{chartVersionDefault}}
       destination:
         namespace: 'argocd'
         name: '{{name}}'

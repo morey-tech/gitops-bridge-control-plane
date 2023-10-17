@@ -1,0 +1,79 @@
+{{- /*
+Using {{` to escape the templating used by appsets.
+*/}}
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: addons-{{ .Release.Name }}
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  generators:
+    - merge:
+        mergeKeys: [server]
+        generators:
+          - clusters:
+              values:
+                addonChart: {{ .Values.chartName | default .Release.Name }}
+                addonChartVersion: {{ .Values.chartVersionDefault }}  # Default addon chart version.
+                addonChartRepository: {{ .Values.chartRepo }}
+              selector:
+                matchExpressions:
+                  # Don't deploy addons to cluster running Argo CD.
+                  - key: akuity.io/argo-cd-cluster-name
+                    operator: NotIn
+                    values: [in-cluster]
+                  # Check annotation to see if addon is enabled.
+                  - key: enable_{{ .Release.Name | snakecase }}
+                    operator: In
+                    values: ['true']
+
+          # Set chart versions based on the environment.
+          - clusters:
+              selector:
+                matchLabels:
+                  environment: staging
+              values:
+                addonChartVersion: {{ .Values.chartVersionStaging | default .Values.chartVersionDefault }}
+          - clusters:
+              selector:
+                matchLabels:
+                  environment: prod
+              values:
+                addonChartVersion: {{ .Values.chartVersionProd | default .Values.chartVersionDefault }}
+  template:
+    metadata:
+      name: addon-{{`{{name}}`}}-{{`{{values.addonChart}}`}}
+    spec:
+      project: default
+      sources:
+        - chart: '{{`{{values.addonChart}}`}}'
+          repoURL: '{{`{{values.addonChartRepository}}`}}'
+          targetRevision: '{{`{{values.addonChartVersion}}`}}'
+          helm:
+            releaseName: '{{`{{values.addonChart}}`}}'
+            ignoreMissingValueFiles: true
+            valueFiles:
+              # General values for the addons chart.
+              - $values/charts/addons-values/{{`{{values.addonChart}}`}}/values.yaml
+              # Environment-specific values for addons chart.
+              - $values/environments/{{`{{metadata.labels.environment}}`}}/addons/{{`{{values.addonChart}}`}}/values.yaml
+              # Cluster-specific values for the addons chart.
+              - $values/clusters/{{`{{name}}`}}/addons/{{`{{values.addonChart}}`}}/values.yaml
+            parameters:
+              # Set Static External IP from cluster metadata (annotations).
+              - name: 'controller.service.loadBalancerIP'
+                value: '{{`{{metadata.annotations.ingress_static_ip}}`}}'
+
+        - repoURL: '{{`{{metadata.annotations.addons_repo_url}}`}}'
+          targetRevision: '{{`{{metadata.annotations.addons_repo_revision}}`}}'
+          ref: values
+      destination:
+        # Deploy to namespace with the same name as the addon chart.
+        namespace: '{{`{{values.addonChart}}`}}'
+        name: '{{`{{name}}`}}'
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true  # Big CRDs.
