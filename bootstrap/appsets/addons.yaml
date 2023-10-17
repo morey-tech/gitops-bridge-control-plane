@@ -20,7 +20,7 @@ spec:
       source:
         # These annotations are set by Terraform.
         repoURL: 'https://github.com/morey-tech/gitops-bridge-control-plane'
-        path: 'charts/appsets'
+        path: 'charts/addons'
         targetRevision: 'HEAD'
         helm:
           releaseName: {{chartName}}
