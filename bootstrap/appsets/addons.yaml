@@ -26,4 +26,5 @@ spec:
     namespace: 'argocd'
     name: 'in-cluster'
   syncPolicy:
-    automated: {}
+    automated:
+      prune: true
