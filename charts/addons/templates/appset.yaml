@@ -8,8 +8,8 @@ kind: ApplicationSet
 metadata:
   name: addons
 spec:
-  syncPolicy:
-    preserveResourcesOnDeletion: true
+  # syncPolicy:
+  #   preserveResourcesOnDeletion: true
   generators:
     - merge:
         mergeKeys: [server]
