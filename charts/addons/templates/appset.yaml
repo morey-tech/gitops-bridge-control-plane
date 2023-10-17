@@ -6,7 +6,7 @@ Using {{` to escape the templating used by appsets.
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: addons
+  name: addons-{{ .chartName }}
 spec:
   # syncPolicy:
   #   preserveResourcesOnDeletion: true
