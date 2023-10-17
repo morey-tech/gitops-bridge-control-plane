@@ -2,6 +2,7 @@
 Using {{` to escape the templating used by appsets.
 */}}
 {{- range .Values.addons }}
+---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
