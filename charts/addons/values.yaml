@@ -1,5 +1,6 @@
-chartName: 
-chartRepo: 
-chartVersionDefault: 
-# chartVersionStaging: 
-# chartVersionProd: 
+addons: []
+# - chartName: 
+#   chartRepo: 
+#   chartVersionDefault: 
+#   chartVersionStaging: 
+#   chartVersionProd: 

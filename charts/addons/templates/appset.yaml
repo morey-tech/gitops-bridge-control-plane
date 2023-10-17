@@ -1,10 +1,11 @@
 {{- /*
 Using {{` to escape the templating used by appsets.
 */}}
+{{- range .Values.addons }}
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: addons-{{ .Release.Name }}
+  name: addons-{{ $.Release.Name }}
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true
@@ -14,9 +15,9 @@ spec:
         generators:
           - clusters:
               values:
-                addonChart: {{ .Values.chartName | default .Release.Name }}
-                addonChartVersion: {{ .Values.chartVersionDefault }}  # Default addon chart version.
-                addonChartRepository: {{ .Values.chartRepo }}
+                addonChart: {{ .chartName | default $.Release.Name }}
+                addonChartVersion: {{ .chartVersionDefault }}  # Default addon chart version.
+                addonChartRepository: {{ .chartRepo }}
               selector:
                 matchExpressions:
                   # Don't deploy addons to cluster running Argo CD.
@@ -24,7 +25,7 @@ spec:
                     operator: NotIn
                     values: [in-cluster]
                   # Check annotation to see if addon is enabled.
-                  - key: enable_{{ .Release.Name | snakecase }}
+                  - key: enable_{{ $.Release.Name | snakecase }}
                     operator: In
                     values: ['true']
 
@@ -34,13 +35,13 @@ spec:
                 matchLabels:
                   environment: staging
               values:
-                addonChartVersion: {{ .Values.chartVersionStaging | default .Values.chartVersionDefault }}
+                addonChartVersion: {{ .chartVersionStaging | default .chartVersionDefault }}
           - clusters:
               selector:
                 matchLabels:
                   environment: prod
               values:
-                addonChartVersion: {{ .Values.chartVersionProd | default .Values.chartVersionDefault }}
+                addonChartVersion: {{ .chartVersionProd | default .chartVersionDefault }}
   template:
     metadata:
       name: addon-{{`{{name}}`}}-{{`{{values.addonChart}}`}}
@@ -77,3 +78,4 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - ServerSideApply=true  # Big CRDs.
+{{- end }}
