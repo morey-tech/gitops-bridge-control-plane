@@ -24,9 +24,9 @@ spec:
       project: default
       source:
         # These annotations are set by Terraform.
-        repoURL: '{{metadata.annotations.addons_repo_url}}'
-        path: '{{metadata.annotations.addons_repo_path}}'
-        targetRevision: '{{metadata.annotations.addons_repo_revision}}'
+        repoURL: 'https://github.com/morey-tech/gitops-bridge-control-plane'
+        path: 'bootstrap/appsets'
+        targetRevision: 'HEAD'
         helm:
           releaseName: {{chartName}}
           parameters:
