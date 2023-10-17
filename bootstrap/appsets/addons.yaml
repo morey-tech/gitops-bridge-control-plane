@@ -38,6 +38,6 @@ spec:
             value: {{chartVersionDefault}}
       destination:
         namespace: 'argocd'
-        name: '{{name}}'
+        name: 'in-cluster'
       syncPolicy:
         automated: {}
