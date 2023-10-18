@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: clusters
+  name: clusters-apps
 spec:
   generators:
     - clusters:
@@ -13,16 +13,15 @@ spec:
               values: [in-cluster]
   template:
     metadata:
-      name: cluster-{{name}}
+      name: cluster-{{name}}-apps
     spec:
       project: default
       source:
         repoURL: '{{metadata.annotations.addons_repo_url}}'
         targetRevision: '{{metadata.annotations.addons_repo_revision}}'
-        path: clusters/{{name}}
+        path: clusters/{{name}}/apps
         directory:
           recurse: true
-          exclude: addons/*
       destination:
         name: '{{name}}'
         namespace: '*'
