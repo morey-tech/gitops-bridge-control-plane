@@ -62,11 +62,10 @@ spec:
               - $values/environments/{{`{{metadata.labels.environment}}`}}/addons/{{`{{values.addonChart}}`}}/values.yaml
               # Cluster-specific values for the addons chart.
               - $values/clusters/{{`{{name}}`}}/addons/{{`{{values.addonChart}}`}}/values.yaml
+            {{- if .chartParameters }}
             parameters:
-              # Set Static External IP from cluster metadata (annotations).
-              - name: 'controller.service.loadBalancerIP'
-                value: '{{`{{metadata.annotations.ingress_static_ip}}`}}'
-
+            {{- .chartParameters | toYaml | nindent 12 }}
+            {{- end }}
         - repoURL: '{{`{{metadata.annotations.addons_repo_url}}`}}'
           targetRevision: '{{`{{metadata.annotations.addons_repo_revision}}`}}'
           ref: values

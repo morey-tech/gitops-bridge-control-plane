@@ -22,6 +22,10 @@ spec:
         - chartName: ingress-nginx
           chartRepo: https://kubernetes.github.io/ingress-nginx
           chartVersionDefault: 4.8.1
+          chartParameters:
+          # Set Static External IP from cluster metadata (annotations).
+          - name: 'controller.service.loadBalancerIP'
+            value: '{{`{{metadata.annotations.ingress_static_ip}}`}}'
   destination:
     namespace: 'argocd'
     name: 'in-cluster'
