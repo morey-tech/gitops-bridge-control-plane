@@ -6,9 +6,26 @@ This git repository is part of the project [GitOps Bridge](https://github.com/gi
 
 Repository contains the following directories:
 
-* **bootstrap/workloads** - This bootstrap uses App of Apps to deploy Application Sets, defines what resources need to be install in all clusters that are not a control plane cluster running ArgoCD.
-* **bootstrap/control-plane** - This bootstrap uses App of Apps to deploy Application Sets. Apply this bootstrap into a control plane cluster that is running an management tools like ArgoCD, defines what resource need to be install on this cluster, the cluster by convention needs to be name "in-cluster", this makes it compatible with ArgoCD SaaS like Akuity Platform. If using ArgoCD SaaS do not deploy this bootstrap.
-* **charts** - Defines the custom charts
-* **environments** - Defines the resources to be deploy per environment type (ie, dev, qa, staging, prod, etc), includes helm values to override the global ones in the chart directory mentioned above
-* **clusters** - Defines the resources specific to particular cluster, it overrides the environment
-* **teams** - Defines the onboarding of an application across namespaces (dev, test, prod) within the same cluster for developer team.
+```yaml
+- bootstrap      # The Applications and ApplicationSets used for Argo CD bootstrapping.
+- charts         # Local Helm charts.
+- clusters       # Cluster specific configurations, including values for addons.
+- environments   # Environment specific configurations, including values for addons.
+- global         # The default `values.yaml` for charts used by addons.
+```
+
+## Argo CD Bootstrapping
+The `bootstrap` folder is used as the source for the initial `Application` created by Terraform after standing up an instance of Argo CD. It bootstraps the instance with an `Application` that deploys `ApplicationSets` for managing cluster addons, and an `ApplicationSet` for deploying cluster-specific workloads (e.g. from the `clusters/<name>` folders).
+
+## Clusters
+Each cluster will need a folder with the same name (as what's defined in Argo CD) under `clusters/`. The `clusters` `ApplicationSet` (deployed by the Argo CD bootstrapping) will create an `Application` to deploy any manifests in that folder (excluding the `addons` folder). A cluster can have any number of arbitrary manifests deployed to it by simply adding them to it's corriesponding folder.
+
+## Addons
+Each cluster can opt into addons deployed into it.
+
+The `global/addons`, `clusters/<name>/addons`, and `environments/<name>/addons` folders are used to provide `values.yaml` to the addons charts.
+
+For example, the `argo-rollouts` addon chart used in the `dev` environment and `gke` cluster, is supplied the following values files (in order of precidence):
+- `global/addons/argo-rollouts/values.yaml`
+- `environments/dev/addons/argo-rollouts/values.yaml`
+- `clusters/gke/addons/argo-rollouts/values.yaml`
