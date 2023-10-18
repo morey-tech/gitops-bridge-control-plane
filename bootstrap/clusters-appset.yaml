@@ -23,7 +23,7 @@ spec:
         directory:
           recurse: true
       destination:
-        name: '{{name}}'
+        name: 'in-cluster'
         namespace: '*'
       syncPolicy:
         retry:
