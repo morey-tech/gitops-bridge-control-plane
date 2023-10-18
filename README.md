@@ -15,10 +15,7 @@ Repository contains the following directories:
 ```
 
 ## Argo CD Bootstrapping
-The `bootstrap` folder is used as the source for the initial `Application` created by Terraform after standing up an instance of Argo CD. It bootstraps the instance with an `Application` that deploys `ApplicationSets` for managing cluster addons, and an `ApplicationSet` for deploying cluster-specific workloads (e.g. from the `clusters/<name>` folders).
-
-## Clusters
-Each cluster will need a folder with the same name (as what's defined in Argo CD) under `clusters/`. The `clusters` `ApplicationSet` (deployed by the Argo CD bootstrapping) will create an `Application` to deploy any manifests in that folder (excluding the `addons` folder). A cluster can have any number of arbitrary manifests deployed to it by simply adding them to it's corriesponding folder.
+The `bootstrap` folder is used as the source for the initial `Application` created by Terraform after standing up an instance of Argo CD. It bootstraps the instance with an `Application` that deploys `ApplicationSets` for managing cluster addons, and an `ApplicationSet` for deploying cluster-specific `Applications` (e.g. from the `clusters/<name>` folders).
 
 ## Addons
 Each cluster can opt into addons deployed into it.
@@ -29,3 +26,8 @@ For example, the `argo-rollouts` addon chart used in the `dev` environment and `
 - `global/addons/argo-rollouts/values.yaml`
 - `environments/dev/addons/argo-rollouts/values.yaml`
 - `clusters/gke/addons/argo-rollouts/values.yaml`
+
+## Cluster Apps
+Each cluster will need a folder with the same name (as what's defined in Argo CD) under `clusters/`. The `clusters` `ApplicationSet` (deployed by the Argo CD bootstrapping) will create an `Application` to deploy any `Application` manifests in the `apps` folder. A cluster can have any number of arbitrary `Applications` deployed to it by simply adding them to it's corriesponding folder. Including ones that point to another GitOps repo that contains the application-specific configurations.
+
+For example, to create an `Application` for the `gke-dev` cluster, simply add the manifest to the `clusters/gke-dev/apps` folder. From there the `cluster-gke-dev-apps` `Applicaiton` (created by the `clusters-apps` `ApplicaitonSet`) will deploy it so that Argo CD will pick it up and start deploying the resources to the cluster.
