@@ -27,6 +27,22 @@ For example, the `argo-rollouts` addon chart used in the `dev` environment and `
 - `environments/dev/addons/argo-rollouts/values.yaml`
 - `clusters/gke/addons/argo-rollouts/values.yaml`
 
+### Creating a New Addon
+1. Create a folder with the same name as the chart under `global/addons`, `environments/*/addons`, and `clusters/*/addons`.
+2. Add an empty `values.yaml` to each of those folders.
+3. Add the chart information in `bootstrap/addons-app.yaml` under the `spec.source.helm.valuesObject.addons` list.
+    ```yaml
+    spec:
+      source:
+        helm:
+        valuesObject:
+          addons:
+          - chartName: argo-rollouts
+            chartRepo: https://argoproj.github.io/argo-helm
+            chartVersionDefault: 2.32.0
+    ```
+4. In the Terraform configuration, add the cooresponding `enable_<chart_name_snakecase>` to the annotations of the clusters that should recieve the addon.
+
 ## Cluster Apps
 Each cluster will need a folder with the same name (as what's defined in Argo CD) under `clusters/`. The `clusters` `ApplicationSet` (deployed by the Argo CD bootstrapping) will create an `Application` to deploy any `Application` manifests in the `apps` folder. A cluster can have any number of arbitrary `Applications` deployed to it by simply adding them to it's corriesponding folder. Including ones that point to another GitOps repo that contains the application-specific configurations.
 

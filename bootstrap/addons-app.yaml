@@ -13,9 +13,9 @@ spec:
     helm:
       valuesObject:
         addons:
-        - chartName: argo-rollouts
-          chartRepo: https://argoproj.github.io/argo-helm
-          chartVersionDefault: 2.32.0
+        - chartName: cert-manager
+          chartRepo: https://charts.jetstack.io
+          chartVersionDefault: v1.13.1
         - chartName: argo-workflows
           chartRepo: https://argoproj.github.io/argo-helm
           chartVersionDefault: 0.33.3
