@@ -16,9 +16,6 @@ spec:
         - chartName: cert-manager
           chartRepo: https://charts.jetstack.io
           chartVersionDefault: v1.13.1
-          chartParameters:
-          - name: 'installCRDs'
-            value: 'true'
         - chartName: external-dns
           chartRepo: https://kubernetes-sigs.github.io/external-dns/
           chartVersionDefault: 1.13.1
