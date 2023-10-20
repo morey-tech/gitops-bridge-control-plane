@@ -17,7 +17,6 @@ spec:
           chartRepo: https://charts.jetstack.io
           chartVersionDefault: v1.13.1
           chartParameters:
-          # Set Static External IP from cluster metadata (annotations).
           - name: 'installCRDs'
             value: 'true'
         - chartName: argo-workflows
