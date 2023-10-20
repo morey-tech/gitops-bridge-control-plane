@@ -29,7 +29,7 @@ spec:
           chartParameters:
           # Set Static External IP from cluster metadata (annotations).
           - name: 'controller.service.loadBalancerIP'
-            value: '{{`{{metadata.annotations.ingress_static_ip}}`}}'
+            value: '{{metadata.annotations.ingress_static_ip}}'
   destination:
     namespace: 'argocd'
     name: 'in-cluster'
