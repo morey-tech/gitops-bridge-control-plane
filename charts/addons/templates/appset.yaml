@@ -66,8 +66,8 @@ spec:
             parameters:
             {{- .chartParameters | toYaml | nindent 12 }}
             {{- end }}
-        - repoURL: '{{`{{metadata.annotations.addons_repo_url}}`}}'
-          targetRevision: '{{`{{metadata.annotations.addons_repo_revision}}`}}'
+        - repoURL: 'https://github.com/morey-tech/gitops-bridge-control-plane'
+          targetRevision: 'HEAD'
           ref: values
       destination:
         # Deploy to namespace with the same name as the addon chart.
